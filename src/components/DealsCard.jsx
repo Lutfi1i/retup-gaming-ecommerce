@@ -1,9 +1,25 @@
-import React from 'react'
+import { formatRupiah } from "../lib/formatrupiah";
+import { Link } from "react-router-dom";
 
-function DealsCard() {
+function DealsCard({ product }) {
   return (
-    <div>DealsCard</div>
-  )
+    <div className="font font-helvetica-light">
+      <Link to={`/products/${product.slug}`}>
+        <div className="flex border border-gray-200 rounded-md p-15 py-2 pl-1 gap-2 items-center justify-center">
+          <img
+            src={product.imageUrl}
+            className="w-[120px] h-[120px] object-contain mb-2"
+          />
+          <div>
+            <p className="text-sm font-semibold">{product.name}</p>
+            <p className="text-sm text-gray-500 font-raleway">
+              {formatRupiah(product.price)}
+            </p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
 }
 
-export default DealsCard
+export default DealsCard;
