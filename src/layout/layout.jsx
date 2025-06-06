@@ -6,8 +6,8 @@ function Layout () {
     const location = useLocation();
     const HideNavbar = ['/login', '/register', '/checkout'];
     const HideFooter = ['/checkout'];
-    const checkisFooterHidden = HideBoth.includes(location.pathname);
-    const checkisNavbarHidden = HideBoth.includes(location.pathname);
+    const CheckisFooterHidden = HideFooter.includes(location.pathname);
+    const CheckisNavbarHidden = HideNavbar.includes(location.pathname);
 
     return (
         <>
@@ -15,7 +15,7 @@ function Layout () {
         <main>
             <Outlet />
         </main>
-        {!CheckisCheckisFooterHidden && <Footer />}
+        {!CheckisFooterHidden && <Footer />}
         </>
     )
 
