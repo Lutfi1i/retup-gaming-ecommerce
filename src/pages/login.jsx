@@ -3,17 +3,6 @@ import { Icon } from "@iconify/react";
 import { useEffect, useState } from 'react';
 import { auth, provider, signInWithPopup } from '../lib/GoogleAuth';
 
-const handleLoginWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    localStorage.setItem('currentUser', JSON.stringify({ username: user.displayName, email: user.email }));
-    alert("Login berhasil sebagai " + user.displayName);
-  } catch (error) {
-    console.error("Login gagal:", error);
-    alert("Gagal login dengan Google.");
-  }
-};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,6 +32,21 @@ const Login = () => {
       alert('Username atau password salah!');
     }
   };
+
+  const handleLoginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    localStorage.setItem('currentUser', JSON.stringify({ username: user.displayName, email: user.email }));
+    alert("Login berhasil sebagai " + user.displayName);
+    navigate('/home'); 
+    window.location.reload(); 
+  } catch (error) {
+    console.error("Login gagal:", error);
+    alert("Gagal login dengan Google.");
+  }
+};
+
 
 
   return (

@@ -7,6 +7,7 @@ import Register from './pages/register';
 import SearchPage from './pages/searchPage';
 import CartPages from './pages/cartPages';
 import WishlistPages from './pages/likedPages';
+import PublicRoute from './components/PublicRoute';
 import Homepage from './pages/homepage';
 import ProfilePage from './pages/profile';
 import CategoryPage from './pages/categories';
@@ -17,13 +18,28 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route index element={
+          <PublicRoute>
+            <Landingpage />
+          </PublicRoute>
+        } />
         {/* Tambahkan route index jika ada halaman home */}
-        <Route index element={<Landingpage />} />
 
         {/* Ini route untuk halaman produk */}
         <Route path="/products/:productName" element={<Productoverview />} />
-        <Route path='login' element={<Login />}/>
-        <Route path='register' element={<Register />}/>
+        <Route path='login' element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+
+
+        <Route path='register' element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } />
+
         <Route path='query' element={<SearchPage />}/>
         <Route path='cart' element={<CartPages />}/>
         <Route path='wishlist' element={<WishlistPages />}/>

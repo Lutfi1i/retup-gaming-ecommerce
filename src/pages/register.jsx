@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import { auth, provider, signInWithPopup } from '../lib/GoogleAuth';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -47,6 +48,22 @@ const Register = () => {
     alert('Register berhasil!');
     navigate('/login');
   };
+
+  
+  const handleLoginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    localStorage.setItem('currentUser', JSON.stringify({ username: user.displayName, email: user.email }));
+    alert("Login berhasil sebagai " + user.displayName);
+    navigate('/home'); 
+    window.location.reload(); 
+  } catch (error) {
+    console.error("Login gagal:", error);
+    alert("Gagal login dengan Google.");
+  }
+};
+
 
   return (
     <div className="font-helvetica-light">
@@ -126,6 +143,7 @@ const Register = () => {
           <div className="flex justify-center mb-8">
               <button
                 type="button"
+                onClick={handleLoginWithGoogle}
                 className="bg-white shadow-xl px-12 py-2 rounded flex items-center justify-center hover:bg-gray-50"
               >
                 <img

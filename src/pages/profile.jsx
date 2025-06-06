@@ -31,6 +31,7 @@ const ProfilePage = () => {
 
   const navigate = useNavigate();
 
+
   return (
     <div className="font-helvetica-light mb-80">
       <div className="h-30 mb-20 content-center bg-[#F1F1F1] border-b-[0,1]">
@@ -77,6 +78,7 @@ const ProfilePage = () => {
           onClick={() => {
             handleLogout();
             navigate('/');
+            window.location.reload();
           }}
           className="mt-4 text-red-600 font-bold text-sm hover:underline font-ag-futura"
         >
