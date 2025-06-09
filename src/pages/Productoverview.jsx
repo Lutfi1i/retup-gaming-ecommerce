@@ -8,6 +8,7 @@ import { fetchProducts } from '../lib/fetchproduct';
 import { addToCart } from '../lib/cartUtils';
 import { useNavigate } from 'react-router-dom';
 import { saveTempCheckout } from '../lib/cartUtils';
+import { isAuthenticated } from '../lib/AuthUtils';
 
 const Productoverview = () => {
 
@@ -39,22 +40,50 @@ useEffect(() => {
 }, [product]);
 
 
-const handleBuyNow = () => {
+const handleCart = () => {
+if (!isAuthenticated()) {
+navigate('/login')
+return;
+}
+addToCart(product);
+};
+
+const buyOnLogin = () => {
+  // Cek apakah user sudah login
+  if (!isAuthenticated()) {
+    // Simpan data produk sementara jika ingin membelinya nanti setelah login
+    const tempProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      imageUrl: product.imageUrl,
+      selected: true
+    };
+
+    saveTempCheckout(tempProduct); // Opsional: hanya jika kamu ingin menyimpan sebelum login
+    navigate('/login', { state: { from: 'buyNow' } }); // Simpan state asal navigasi jika perlu
+    return;
+  }
+
+  // Buat data produk untuk checkout
   const itemToBuy = {
     id: product.id,
     name: product.name,
     price: product.price,
     quantity: 1,
-    image: product.image || product.imageUrl,
+    imageUrl: product.image || product.imageUrl,
     selected: true
   };
-  
+
+  // Simpan data ke temp checkout
   saveTempCheckout(itemToBuy);
-  navigate('/checkout', { 
+
+  // Navigasi ke halaman checkout dengan state penanda
+  navigate('/checkout', {
     state: { fromBuyNow: true }
   });
 };
-
 
 if (!product) {
   return (
@@ -127,12 +156,12 @@ if (!product) {
           <div className="space-y-3 mt-10">
             <button 
               className="w-full py-4 border border-black bg-white font-medium rounded-full hover:bg-gray-100 font-ag-futura text-xl"
-              onClick={handleBuyNow}
+              onClick={buyOnLogin}
             >
               Buy Now
             </button>
             <button 
-            onClick={() => addToCart({ ...product, quantity })}
+            onClick={handleCart}
 
               className="w-full py-4 bg-black text-white font-medium rounded-full hover:bg-gray-800 font-ag-futura text-xl"
             >

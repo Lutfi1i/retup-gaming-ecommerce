@@ -1,3 +1,5 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+
 function Footer () {
     return (
       <div>
@@ -19,6 +21,7 @@ function Footer () {
 
       <ul className="mt-8 flex gap-6">
         {/* ...social icons... */}
+        <Icon icon="mdi:instagram" width={32} height={32} className="bg-color-white"></Icon>
       </ul>
       </div>
 

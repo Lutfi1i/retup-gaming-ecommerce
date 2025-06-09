@@ -163,10 +163,16 @@ function Navbar() {
             <Link to="/cart" className="flex items-center gap-2 text-gray-600 hover:text-gray-800">
               <Icon icon="material-symbols-light:shopping-bag-outline" width={24} />
               Keranjang
+             <div className="text-blue-500 font-ag-futura">
+                {totalItems}
+              </div>
             </Link>
             <Link to="/wishlist" className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mt-5">
               <Icon icon="weui:like-outlined" width={24} height={30} />
               Wishlist
+              <div className="text-blue-500 font-ag-futura">
+                {totalLiked}
+              </div>
             </Link>
             {currentUser ? (
               <div className="md:inline relative">

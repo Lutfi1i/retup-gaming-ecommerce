@@ -2,6 +2,8 @@ import { formatRupiah } from "../lib/formatrupiah";
 import { Link } from "react-router-dom";
 
 function DealsCard({ product }) {
+  const HalfDiscount = product.price / 2;
+
   return (
     <div className="font font-helvetica-light">
       <Link to={`/products/${product.slug}`}>
@@ -11,9 +13,12 @@ function DealsCard({ product }) {
             className="w-[120px] h-[120px] object-contain mb-2"
           />
           <div>
-            <p className="text-sm font-semibold">{product.name}</p>
-            <p className="text-sm text-gray-500 font-raleway">
+            <p className="text-sm font-semibold flex">{product.name}</p>
+            <p className="text-sm line-through text-gray-500 font-raleway">
               {formatRupiah(product.price)}
+            </p>
+            <p className="flex text- text-black font-raleway">
+              {formatRupiah(HalfDiscount)}
             </p>
           </div>
         </div>

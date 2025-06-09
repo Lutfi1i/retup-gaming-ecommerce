@@ -5,23 +5,41 @@ import DealsCard from '../components/DealsCard';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../lib/fetchproduct';
 import { Fade } from 'react-awesome-reveal';
+import { ArrowRight, Star, Zap, Shield, Truck, Gift } from 'lucide-react';
 
 function Homepage() {
   const bannerImage = [
-    { url: "./assets/mksgmdpd.png" }
+   { 
+      url: "/assets/mksgmdpd.png",
+      title: "Gamepad Collection",
+      cta: "/category/gamepad"
+    },
+    { 
+      url: "/assets/mouse1.png",
+      title: "Gaming Mouse Gear",
+      cta: "/category/mouse"
+    },
+    {
+      url:"https://akkogear.eu/cdn/shop/files/Akko-MU02-ISO-DE-Mountain-Seclusion-Banner-2800-1000.jpg?v=1733134646&width=2800",
+      title: "Keyboard Lenovo",
+      cta: "/category/keyboard"
+    }
   ];
 
 const [productShow, setProductShow] = useState([]);
 const [productCard, setProductCard] = useState([]);
 const [currentUser, setCurrentUser] = useState(null);
+const [isVisible, setIsVisible] = useState(false);
+const [imageNow, setImageNow] =useState(0)
+
+setTimeout(() => setIsVisible(true), 100);
 
 useEffect(() => {
   fetchProducts().then((products) => {
-    // tampilkan 4 produk pertama sebagai "Deals"
-    setProductShow(products.slice(0, 2)),
-    setProductCard(products.slice(0, 3));
+    setProductShow(products.slice(0, 2)); // Adjust the range as needed to include products with id 7 and 9
+    setProductCard(products.slice(0, 6));
   });
-}, []);;
+}, []);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -34,117 +52,172 @@ useEffect(() => {
     { id: 1, name: 'Mouse', image: './categories-icon/mouse.png', path: '/category/mouse' },
     { id: 2, name: 'Keyboard', image: './categories-icon/keyboard.png', path: '/category/keyboard' },
     { id: 3, name: 'Gamepad', image: './categories-icon/gamepad.png', path:'/category/gamepad' },
-    { id: 4, name: 'Deskmat', image: './categories-icon/deskmat.png', path:'' },
-    { id: 5, name: 'Accessories', image: './categories-icon/acc.png', path:'' },
+    { id: 4, name: 'Deskmat', image: './categories-icon/deskmat.png', path:'/category/mousepad' },
+    { id: 5, name: 'Accessories', image: './categories-icon/acc.png', path:'/category/other' },
   ]
+  
+   const features = [
+    { icon: Truck, title: 'Free Shipping', desc: 'Free shipping on orders over Rp 500,000' },
+    { icon: Shield, title: '7 Days Return', desc: '7-day hassle-free return guarantee' },
+    { icon: Gift, title: 'Best Deals', desc: 'Exclusive offers you won\'t find elsewhere' }
+  ];
 
+  // If you want to implement a banner slider, add this state and useEffect:
+  
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setImageNow((prev) => (prev + 1) % bannerImage.length);
+    }, 3000);
+  
+    return () => clearInterval(slideInterval);
+  }, [bannerImage.length]);
 
-  // Animate On Scroll (AOS) is a popular and easy-to-use library for scroll animations in React.
-  // Install: npm install aos
-  // Import CSS in your main entry or component:
-  // import 'aos/dist/aos.css';
-  // Initialize in useEffect:
-  // import AOS from 'aos';
-  // useEffect(() => { AOS.init({ duration: 800, once: true }); }, []);
 
   return (
-      <div>
-    <div className="relative w-full h-auto overflow-hidden">
-    <img 
-      src={bannerImage[0].url} 
-      className="w-full h-auto object-contain" 
-      alt="Banner" 
-    />
-  </div>
+    <div>
+      <div className="relative w-full  overflow-hidden">
+        {/* Hero Banner Slider */}
+        <div className="relative w-full md:h-[600px] h-[200px] overflow-hidden">
+          {/* Image Slider */}
+          <div className="relative w-full h-full">
+            {bannerImage.map((banner, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
+                  index === imageNow ? 'translate-x-0' :
+                  index < imageNow ? '-translate-x-full' : 'translate-x-full'
+                }`}
+              >
+                <div className="relative w-full h-full">
+                  <img 
+                    src={banner.url} 
+                    className="w-full object-contain" 
+                    alt={`Banner ${index + 1}`} 
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
 
-    <div className="max-w-[1100px] mx-auto">
-      <div className='mt-20'></div>
-    <div className='mb-20'></div>
-        <div className="mt-20">
-          <div className='border-t border-gray-200 mb-10'></div>
-          <div className="flex flex-wrap gap-20 pb-4 justify-center font-helvetica-light">
-          <div className="flex flex-wrap justify-center gap-10 md:gap-16 pb-6 font-helvetica-light">
-              {Category.map((category) => (
-                <Link
-                  to={category.path}
-                  className="flex flex-col items-center transition-transform hover:scale-110"
-                  data-aos="fade-up"
-                >
-                  <div className="w-20 h-20 mb-2">
-                    <img
-                      src={category.image}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <span className="text-sm text-center text-gray-700">{category.name}</span>
-                </Link>
-              ))}
+          {/* Content Overlay */}
+          <div className="justify-center absolute inset-0 z-99 flex items-center">
+            <div className="flex mt-100">
+              <Link to={bannerImage[imageNow].cta}>
+                <button className={`rounded bg-white text-black px-8 py-4 text-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} 
+                  style={{ animationDelay: '400ms' }}>
+                  {bannerImage[imageNow].title}
+                </button>
+              </Link>
             </div>
-            <div className="flex items-center justify-center">
-              <button className="text-gray-600 bg-gray-100 rounded-full p-2">
-              </button>
+          </div>
+
+          {/* Slide Indicators */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+            <div className="flex space-x-3">
+              {bannerImage.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setImageNow(index)}
+                  className={`w-10 h-1 transition-all duration-300 rounded-full ${
+                    index === imageNow ? 'bg-white' : 'bg-white/50 hover:bg-white/75'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
 
-  <h2 className='font-ag-futura text-2xl mt-10 text-center md:text-justify' data-aos="fade-right">Special For You, {currentUser ? currentUser.username : "Unknown_user"} </h2>
-    <div className='max-w-6xl mx-auto px-4 py-10'>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' data-aos="fade-up">
-      {productCard.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-      </div>
-    </div>
+        {/*Isi Keseluruhan*/}
+        <div className="max-w-[1100px] mx-auto">
+          <div className='mt-20'></div>
+          <div className='mb-20'></div>
+          <div className="mt-20">
+            <div className='border-t border-gray-200 mb-10'></div>
+            <div className="flex flex-wrap gap-20 pb-4 justify-center font-helvetica-light">
+              <div className="flex flex-wrap justify-center gap-10 md:gap-16 pb-6 font-helvetica-light">
+                {Category.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={category.path}
+                    className="flex flex-col items-center transition-transform hover:scale-110"
+                    data-aos="fade-up"
+                  >
+                    <div className="w-20 h-20 mb-2">
+                      <img
+                        src={category.image}
+                        className="w-full h-full object-contain"
+                        alt={category.name}
+                      />
+                    </div>
+                    <span className="text-sm text-center text-gray-700">{category.name}</span>
+                  </Link>
+                ))}
+              </div>
+              <div className="flex items-center justify-center">
+                <button className="text-gray-600 bg-gray-100 rounded-full p-2">
+                </button>
+              </div>
+            </div>
+          </div>
 
-  <div className='hidden md:inline'>
-  <div className='mt-20 mb-20'>
-  <div className="grid grid-cols-2 gap-4" data-aos="zoom-in">
- {productShow.map((product) => (
-      <DealsCard key={product.id} product={product} />
-    ))}
-  </div>
-  </div>
-  </div>
+          <h2 className='font-ag-futura text-2xl mt-10 text-center md:text-justify' data-aos="fade-right">
+            Special For You, {currentUser ? currentUser.username : "Unknown_user"}
+          </h2>
+          <div className='max-w-6xl mx-auto px-4 py-10'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' data-aos="fade-up">
+              {productCard.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
 
-  <div>
-     <Fade direction="up" cascade damping={0.1} triggerOnce>
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-40' data-aos="fade-up">
-      {productCard.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-     </Fade>
-    
+            <div className='mt-20 mb-20'>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-aos="zoom-in">
+                 {productShow.map((product) => (
+                <DealsCard key={product.id} product={product} />
+              ))}
+              </div>
+            </div>
 
-    
-    <div className='mt-50'>
-       <div className="w-full h-auto bg-white flex-row items-center justify-between flex font-helvetica-light md:grid-cols-3 py-8">
-    <div className="justify-center items-center flex flex-col" data-aos="fade-up">
-      <img src="/footerAssets/7days.png" className="items-center" />
-    <p className="max-w-[300px] text-center p-2 text-sm md:text-base">
-      Get better promos, better prices when you shop directly with our website. Best value that you won't get on any other platform!
-    </p>
-    </div>
+          <div>
+            <Fade direction="up" cascade damping={0.1} triggerOnce>
+              <div className='flex items-stretch overflow-x-auto gap-6 mt-40 pb-4'>
+                 {productCard.map((product) => (
+                <div key={product.id} className="shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4">
+                    {/* Anda tidak perlu mengubah komponen ProductCard sama sekali */}
+                    <ProductCard product={product} />
+                </div>
+                 ))}
+              </div>
+            </Fade>
 
-     <div className="justify-center items-center flex flex-col" data-aos="fade-up" data-aos-delay="100">
-      <img src="/footerAssets/7days.png" className="items-center" />
-    <p className="max-w-[300px] text-center p-2 text-sm md:text-base">
-      Get better promos, better prices when you shop directly with our website. Best value that you won't get on any other platform!
-    </p>
-    </div>
-
-
-    <div className="justify-center items-center flex flex-col" data-aos="fade-up" data-aos-delay="200">
-      <img src="/footerAssets/7days.png" className="items-center" />
-    <p className="max-w-[300px] text-center p-2 text-sm md:text-base">
-      Get better promos, better prices when you shop directly with our website. Best value that you won't get on any other platform!
-    </p>
-      </div>
-    </div>
-  </div> 
-  </div>
-    </div>
+            <div className="py-20 mt-20">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-light text-gray-800 mb-4">
+                  Why Choose Us
+                </h2>
+                <p className="text-gray-600 text-lg font-light">
+                  Experience the best shopping with our premium services
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {features.map((feature, index) => (
+                  <div key={index} className={`text-center group bg-white p-8 hover:bg-gray-50 transition-colors ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} 
+                    style={{ animationDelay: `${index * 200}ms` }}>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-black flex items-center justify-center">
+                      <feature.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-light text-gray-800 mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 font-light">{feature.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div> 
         </div>
+      </div>
+    </div>
   );
 }
 

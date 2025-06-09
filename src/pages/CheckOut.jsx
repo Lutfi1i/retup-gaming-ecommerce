@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCart, clearCart, getTempCheckout, clearTempCheckout } from "../lib/cartUtils";
 import { formatRupiah } from "../lib/formatrupiah";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,6 @@ const CheckoutPage = () => {
   useEffect(() => {
     setLoading(true);
 
-    // Check if this is a direct checkout
     const tempCheckout = getTempCheckout();
     if (tempCheckout) {
       setSelectedItems(tempCheckout);
@@ -49,20 +49,20 @@ const CheckoutPage = () => {
     });
   };
 
-  const DeleteCart = (id) => {
-    const updatedItems = selectedItems.filter((item) => item.id !== id);
-    setSelectedItems(updatedItems);
-    clearCart();
-    updatedItems.forEach((item) => {
-      localStorage.setItem(`cart-${item.id}`, JSON.stringify(item));
-    });
-  };
+  // const DeleteCart = (id) => {
+  //   const updatedItems = selectedItems.filter((item) => item.id !== id);
+  //   setSelectedItems(updatedItems);
+  //   clearCart();
+  //   updatedItems.forEach((item) => {
+  //     localStorage.setItem(`cart-${item.id}`, JSON.stringify(item));
+  //   });
+  // };
 
   const handleCheckout = () => {
     if (paymentMethod && selectedItems.length > 0) {
       alert("Checkout berhasil! Terima kasih sudah berbelanja.");
-      clearAllCart(); // This clears localStorage
-      navigate("/");  // Changed from "/home" to "/" to match your routing
+      clearAllCart(); 
+      navigate("/"); 
     } else {
       alert("Silakan pilih metode pembayaran");
     }
@@ -77,9 +77,17 @@ const CheckoutPage = () => {
     );
   }
 
+  const GakJadiCheckout = () => {
+    navigate(-1);
+    clearTempCheckout();
+  }
+
   return (
     <div className="max-w-[1200px] mx-auto py-10 px-4 font-helvetica-light">
-      <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+      <div className="flex items-center mb-6">
+        <Icon onClick={GakJadiCheckout} icon="material-symbols:arrow-back-rounded" className="text-2xl mr-2" />
+        <h1 className="text-2xl font-bold">Checkout</h1>
+      </div>
 
       <div className="mb-6">
         <label className="block text-sm font-medium mb-2">Metode Pembayaran</label>
@@ -95,8 +103,8 @@ const CheckoutPage = () => {
             onClick={() => setPaymentMethod("card")}
           >
             <div className="flex items-center gap-2">
-            <img src="/payment/visa.png" width={32} height={32} />
-            <img src="/payment/mastercard.png" width={32} height={32} />
+              <img src="/payment/visa.png" width={32} height={32} />
+              <img src="/payment/mastercard.png" width={32} height={32} />
             </div>
           </button>
           <button

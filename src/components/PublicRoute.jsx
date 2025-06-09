@@ -6,4 +6,8 @@ const PublicRoute = ({ children }) => {
   return isAuthenticated() ? <Navigate to="/home" replace /> : children;
 };
 
-export default PublicRoute;
+const ProtectedRoute = ({ children }) => {
+  return isAuthenticated() ? children : <Navigate to="/login" replace />;
+};
+
+export { PublicRoute, ProtectedRoute };
