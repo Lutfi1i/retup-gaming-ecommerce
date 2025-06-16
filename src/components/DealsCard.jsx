@@ -7,19 +7,21 @@ function DealsCard({ product }) {
   return (
     <div className="font font-helvetica-light">
       <Link to={`/products/${product.slug}`}>
-        <div className="flex border border-gray-200 rounded-md p-15 py-2 pl-1 gap-2 items-center justify-center">
+        <div className="flex border border-gray-200 p-15 py-2 pl-1 gap-4 items-center justify-center">
           <img
             src={product.imageUrl}
             className="w-[120px] h-[120px] object-contain mb-2"
           />
           <div>
             <p className="text-sm font-semibold flex">{product.name}</p>
+            <div className="flex items-center gap-3">
             <p className="text-sm line-through text-gray-500 font-raleway">
               {formatRupiah(product.price)}
             </p>
-            <p className="flex text- text-black font-raleway">
+            <span className="text-center text-black font-raleway flex">
               {formatRupiah(HalfDiscount)}
-            </p>
+            </span>
+            </div>
           </div>
         </div>
       </Link>

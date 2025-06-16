@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -18,11 +18,12 @@ const { productName } = useParams();
 const [product, setProduct] = useState(null);
 const [selectedImage, setSelectedImage] = useState(0);
 const [products, setProducts] = useState([]);
+const ScrollProduct = useRef(null)
 
 
 useEffect(() => {
   fetchProducts().then((products) => {
-    setProducts(products.slice(0, 3));
+    setProducts(products.slice(0, 8));
   });
 }, []);;
 
@@ -84,6 +85,15 @@ const buyOnLogin = () => {
     state: { fromBuyNow: true }
   });
 };
+
+const scrollToTheRight = () => {
+    ScrollProduct.current.scrollBy({ left: 600, behaviour: 'smooth '});
+  };
+
+  const scrollToTheLeft = () => {
+    ScrollProduct.current.scrollBy({ left: -600, behaviour: 'smooth '});
+  };
+  
 
 if (!product) {
   return (
@@ -191,16 +201,32 @@ if (!product) {
 
       <div className="border-t border-gray-200 pt-8 pb-16">
         <h2 className="text-xl font-semibold my-4 mb-5">Produk Terkait</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="flex overflow-x-auto gap-4 px-10 py-4 scroll-smooth scrollbar-hide">
           {/* Produk Terkait */}
           </div>
         </div>
           <div>
-              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 '>
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+          <div className='relative mb-15'>
+        <button onClick={scrollToTheLeft} className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow'>
+        <Icon icon="ic:round-navigate-before"></Icon>
+          </button>
+          
+        <div
+                            ref={ScrollProduct}
+          
+                            className="flex overflow-x-scroll gap-4 px-10 py-4 scroll-smooth scrollbar-hide"
+                          >
+          
+                           {products.map((product) => (
+                          <div key={product.id} className="shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4">
+                              <ProductCard product={product} />
+                          </div>
+                           ))}
+                        </div>
+                         <button onClick={scrollToTheRight} className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-3'>
+                          <Icon icon="ic:round-navigate-next"></Icon>
+                          </button>
+                        </div>
       </div>
     </div>
   )

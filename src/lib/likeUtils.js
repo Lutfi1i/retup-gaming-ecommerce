@@ -1,5 +1,3 @@
-// likeUtils.js
-
 const LIKED_KEY = 'likedProduct';
 
 export const getLiked = () => {

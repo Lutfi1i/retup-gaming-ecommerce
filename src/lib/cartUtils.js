@@ -35,3 +35,15 @@ export const getTempCheckout = () => {
 export const clearTempCheckout = () => {
   localStorage.removeItem('temp-checkout');
 };
+
+export const saveSelectedItems = (selectedItems) => {
+  localStorage.setItem('selected-items', JSON.stringify(selectedItems));
+}
+
+export const clearSelectedFromCart = () => {
+  const cart = getCart();
+  const selectedItems = JSON.parse(localStorage.getItem('selected-items')) || [];
+  const updatedCart = cart.filter(item => !selectedItems.includes(item.id));
+  saveCart(updatedCart);
+  localStorage.removeItem('selected-items');
+}

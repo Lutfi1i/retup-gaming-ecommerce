@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getCart, saveCart } from '../lib/cartUtils'
+import { getCart, saveCart, saveSelectedItems } from '../lib/cartUtils'
 import { Link } from 'react-router-dom'
 import { formatRupiah } from '../lib/formatrupiah'
 import { Icon } from '@iconify/react'
@@ -229,15 +229,13 @@ const toggleSelectAll = () => {
         </div>
         <button 
           onClick={() => {
-            const selectedCartItems = cartItems.map(item => ({
-              ...item,
-              selected: selectedItems.has(item.id)
-            })).filter(item => selectedItems.has(item.id));
+            const selectedCartItems = cartItems.filter(item => selectedItems.has(item.id));
             
             if (selectedCartItems.length > 0) {
-              saveCart(selectedCartItems);
+              // Save selected items before checkout
+              saveSelectedItems(Array.from(selectedItems));
               navigate('/checkout', { 
-                state: { fromCart: true }  // Tambahkan state untuk tracking
+                state: { fromCart: true }
               });
             }
           }}

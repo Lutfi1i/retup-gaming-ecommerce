@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCart, clearCart, getTempCheckout, clearTempCheckout } from "../lib/cartUtils";
+import { getCart, getTempCheckout, clearTempCheckout, clearSelectedFromCart } from "../lib/cartUtils";
 import { formatRupiah } from "../lib/formatrupiah";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
@@ -8,7 +8,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState("qris");
+  const [paymentMethod, setPaymentMethod] = useState();
 
   useEffect(() => {
     setLoading(true);
@@ -36,33 +36,14 @@ const CheckoutPage = () => {
     0
   );
 
-  const clearAllCart = () => {
-    setSelectedItems([]);
-    clearCart();
-    clearTempCheckout(); // Add this line
-    localStorage.removeItem('cart');
-    
-    Object.keys(localStorage).forEach((key) => {
-      if (key.startsWith('cart-')) {
-        localStorage.removeItem(key);
-      }
-    });
-  };
-
-  // const DeleteCart = (id) => {
-  //   const updatedItems = selectedItems.filter((item) => item.id !== id);
-  //   setSelectedItems(updatedItems);
-  //   clearCart();
-  //   updatedItems.forEach((item) => {
-  //     localStorage.setItem(`cart-${item.id}`, JSON.stringify(item));
-  //   });
-  // };
-
   const handleCheckout = () => {
     if (paymentMethod && selectedItems.length > 0) {
-      alert("Checkout berhasil! Terima kasih sudah berbelanja.");
-      clearAllCart(); 
-      navigate("/"); 
+      if (window.confirm("Apakah Anda yakin ingin melakukan checkout?")) {
+        alert("Pemesanan Berhasil")
+        clearSelectedFromCart(); 
+        clearTempCheckout();
+        navigate("/");
+      }
     } else {
       alert("Silakan pilih metode pembayaran");
     }
@@ -86,20 +67,20 @@ const CheckoutPage = () => {
     <div className="max-w-[1200px] mx-auto py-10 px-4 font-helvetica-light">
       <div className="flex items-center mb-6">
         <Icon onClick={GakJadiCheckout} icon="material-symbols:arrow-back-rounded" className="text-2xl mr-2" />
-        <h1 className="text-2xl font-bold">Checkout</h1>
+        <h1 className="text-2xl font-ag-futura">Checkout</h1>
       </div>
 
       <div className="mb-6">
         <label className="block text-sm font-medium mb-2">Metode Pembayaran</label>
         <div className="flex gap-4">
           <button
-            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'qris' ? 'bg-white text-black' : 'border-gray-300'}`}
+            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'qris' ? 'border-cyan-200 border-3' : 'border-gray-300'}`}
             onClick={() => setPaymentMethod("qris")}
           >
             <img src="/payment/qris.png" width={32} height={32} />
           </button>
           <button
-            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'card' ? 'bg-white text-black' : 'border-gray-300'}`}
+            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'card' ? 'border-cyan-200 border-3' : 'border-gray-300'}`}
             onClick={() => setPaymentMethod("card")}
           >
             <div className="flex items-center gap-2">
@@ -108,7 +89,7 @@ const CheckoutPage = () => {
             </div>
           </button>
           <button
-            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'gopay' ? 'bg-white text-black' : 'border-gray-300'}`}
+            className={`px-4 py-2 border rounded-full text-sm ${paymentMethod === 'gopay' ? 'border-cyan-200 border-3' : 'border-gray-300'}`}
             onClick={() => setPaymentMethod("gopay")}
           >
             <img src="/payment/gopay.png" width={32} height={32} />
@@ -131,7 +112,7 @@ const CheckoutPage = () => {
                 <h3 className="font-semibold text-lg">{item.name}</h3>
                 <p className="text-gray-500 text-sm">Qty: {item.quantity}</p>
               </div>
-              <p className="font-medium">{formatRupiah(item.price * item.quantity)}</p>
+              <p className="font-medium font-raleway">{formatRupiah(item.price * item.quantity)}</p>
             </div>
           ))}
 
@@ -142,8 +123,9 @@ const CheckoutPage = () => {
           <div className="flex justify-end">
             <button
               onClick={handleCheckout}
-              className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800"
+              className="bg-black text-white px-6 py-5 rounded-2xl hover:bg-gray-800 font-ag-futura flex items-center gap-2 shadow hover:scale-95"
             >
+            <Icon icon="tdesign:secured-filled"></Icon>
               Konfirmasi Checkout
             </button>
           </div>

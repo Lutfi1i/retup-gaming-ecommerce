@@ -21,7 +21,7 @@ const Register = () => {
     e.preventDefault();
 
     // Validasi dasar
-    if (!form.username || !form.password || !form.confirmPassword) {
+    if (!form.username || !form.password || !form.confirmPassword || !form.email) {
       return alert('Harap isi semua kolom');
     }
 
@@ -139,6 +139,11 @@ const Register = () => {
             </button>
           </div>
         </form>
+
+        <div className="text-center mb-6">
+              <p className="text-sm text-gray-500">Or Continue with</p>
+            </div>
+
 
           <div className="flex justify-center mb-8">
               <button

@@ -5,7 +5,7 @@ import DealsCard from '../components/DealsCard';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../lib/fetchproduct';
 import { Fade } from 'react-awesome-reveal';
-import { ArrowRight, Star, Zap, Shield, Truck, Gift } from 'lucide-react';
+import { Shield, Truck, Gift } from 'lucide-react';
 
 function Homepage() {
   const bannerImage = [
@@ -181,7 +181,7 @@ useEffect(() => {
 
           <div>
             <Fade direction="up" cascade damping={0.1} triggerOnce>
-              <div className='flex items-stretch overflow-x-auto gap-6 mt-40 pb-4'>
+              <div className='flex items-stretch overflow-x-auto gap-6 mt-40 pb-4 scrollbar-hide'>
                  {productCard.map((product) => (
                 <div key={product.id} className="shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4">
                     {/* Anda tidak perlu mengubah komponen ProductCard sama sekali */}
