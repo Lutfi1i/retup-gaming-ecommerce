@@ -20,14 +20,16 @@ const CheckoutPage = () => {
       return;
     }
 
-    // Otherwise, check cart
     const cart = getCart();
+    const SelectedIDs = JSON.parse(localStorage.getItem('selected-items')) || [];
+    
     if (!cart || cart.length === 0) {
       navigate('/cart');
       return;
     }
 
-    setSelectedItems(cart);
+    const selectedCartItems = cart.filter(item => SelectedIDs.includes(item.id));
+    setSelectedItems(selectedCartItems);
     setLoading(false);
   }, [navigate]);
 

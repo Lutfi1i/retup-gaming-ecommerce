@@ -43,8 +43,8 @@ const ProfilePage = () => {
           <div className="space-y-4">
             <div>
               <h2 className="text-md font-ag-futura">Email</h2>
-              <p>*Email tidak dapat diganti*</p>
-              {editMode ? (
+              <div className="flex gap-10 ">
+                   {editMode ? (
                 <input
                   type="email"
                   name="email"
@@ -55,6 +55,8 @@ const ProfilePage = () => {
               ) : (
                 <p>{currentUser.email}</p>
               )}
+              <p className="text-black font-bold text-sm">*Email tidak dapat diganti*</p>
+              </div>
             </div>
             <div>
               <h2 className="text-md font-ag-futura">Username</h2>

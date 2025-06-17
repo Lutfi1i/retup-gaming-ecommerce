@@ -26,17 +26,20 @@ function Homepage() {
     }
   ];
 
-const [productShow, setProductShow] = useState([]);
 const [productCard, setProductCard] = useState([]);
 const [currentUser, setCurrentUser] = useState(null);
 const [isVisible, setIsVisible] = useState(false);
-const [imageNow, setImageNow] =useState(0)
+const [imageNow, setImageNow] = useState(0)
+const [dealsUser, setDealsUser] = useState([])
 
 setTimeout(() => setIsVisible(true), 100);
 
 useEffect(() => {
   fetchProducts().then((products) => {
-    setProductShow(products.slice(0, 2)); // Adjust the range as needed to include products with id 7 and 9
+    const dealsUserItems = products.filter((product) => 
+    [9, 13].includes(product.id))
+
+    setDealsUser(dealsUserItems)
     setProductCard(products.slice(0, 6));
   });
 }, []);
@@ -62,7 +65,6 @@ useEffect(() => {
     { icon: Gift, title: 'Best Deals', desc: 'Exclusive offers you won\'t find elsewhere' }
   ];
 
-  // If you want to implement a banner slider, add this state and useEffect:
   
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -160,28 +162,23 @@ useEffect(() => {
             </div>
           </div>
 
-          <h2 className='font-ag-futura text-2xl mt-10 text-center md:text-justify' data-aos="fade-right">
-            Special For You, {currentUser ? currentUser.username : "Unknown_user"}
+          <Fade direction="up" cascade damping={0.1} triggerOnce>
+          <h2 className='justify-center text-center font-ag-futura uppercase text-4xl mt-10 max-w-screen'>
+            Special, {currentUser ? currentUser.username : "Entity303"}
           </h2>
+          <p className='justify-center text-center font-helvetica-light uppercase text-1xl mb-8 mt-5 max-w-screen inline:max-w-[200px]'>Diskon besar-besaran ini hanya untuk mu!</p>
           <div className='max-w-6xl mx-auto px-4 py-10'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' data-aos="fade-up">
-              {productCard.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-
-            <div className='mt-20 mb-20'>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-aos="zoom-in">
-                 {productShow.map((product) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {dealsUser.map((product) => (
                 <DealsCard key={product.id} product={product} />
               ))}
               </div>
             </div>
+            </Fade>
 
           <div>
             <Fade direction="up" cascade damping={0.1} triggerOnce>
-              <div className='flex items-stretch overflow-x-auto gap-6 mt-40 pb-4 scrollbar-hide'>
+              <div className='flex items-stretch overflow-x-auto gap-6 mt-20 pb-4 scrollbar-hide'>
                  {productCard.map((product) => (
                 <div key={product.id} className="shrink-0 w-4/5 sm:w-1/2 md:w-1/3 lg:w-1/4">
                     {/* Anda tidak perlu mengubah komponen ProductCard sama sekali */}
@@ -200,7 +197,8 @@ useEffect(() => {
                   Experience the best shopping with our premium services
                 </p>
               </div>
-              
+
+             <Fade direction='up' cascade damping={0.1} triggerOnce>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
                   <div key={index} className={`text-center group bg-white p-8 hover:bg-gray-50 transition-colors ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} 
@@ -213,6 +211,7 @@ useEffect(() => {
                   </div>
                 ))}
               </div>
+              </Fade>
             </div>
           </div> 
         </div>

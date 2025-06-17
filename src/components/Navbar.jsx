@@ -90,12 +90,12 @@ function Navbar() {
         {/* Search & Icons */}
         <div className="flex items-center gap-3 relative">
           <form onSubmit={handleForSearch} className="flex gap-2">
-            <Icon icon="mdi:magnify" className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Icon icon="mdi:magnify" className="absolute left-38 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              className="w-44 border rounded-full py-1 px-2 pl-8 text-sm transition-colors"
+              className="w-44 border rounded-full py-1 px-1 pl-8 text-sm transition-colors"
               placeholder="Search here..."
             />
           </form>

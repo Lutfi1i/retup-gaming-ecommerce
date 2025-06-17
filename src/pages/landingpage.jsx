@@ -239,7 +239,7 @@ useEffect(() => {
               </div>
               </Fade>
              
-               <Fade direction='up' cascade damping={0.1} triggerOnce>
+            <Fade direction='up' cascade damping={0.1} triggerOnce>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
                   <div key={index} className={`text-center group bg-white p-8 hover:bg-gray-50 transition-colors ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} 
