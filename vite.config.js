@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server : {
     proxy: {
-      '/api': 'http://localhost:5000',
+      '/api': 'https://api-e-commerce-retup-10.vercel.app/',
     },
     host: true,
     allowedHosts: ['.ngrok-free.app'],
