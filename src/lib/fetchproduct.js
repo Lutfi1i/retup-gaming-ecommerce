@@ -1,4 +1,4 @@
-const BASE_URL = '/api/products';
+const BASE_URL = 'https://api-e-commerce-retup-10.vercel.app/api/products';
 
 export async function fetchProducts() {
     const res = await fetch(BASE_URL);
