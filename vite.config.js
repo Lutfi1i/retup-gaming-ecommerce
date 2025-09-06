@@ -6,9 +6,12 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server : {
-    proxy: {
-      '/api': 'https://api-e-commerce-retup-10.vercel.app',
-    },
+    proxy:  
+        '/api': {
+        target: 'https://api-e-commerce-retup-10.vercel.app/', // Replace with your backend API URL
+        changeOrigin: true, // Needed for virtual hosted sites
+        rewrite: (path) => path.replace(/^\/api/, ''), // Remove the '/api' prefix when forwarding
+      },
     host: true,
     allowedHosts: ['.ngrok-free.app'],
   },
